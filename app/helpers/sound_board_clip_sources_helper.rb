@@ -1,0 +1,2 @@
+module SoundBoardClipSourcesHelper
+end
