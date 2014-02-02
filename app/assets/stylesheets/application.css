@@ -9,5 +9,10 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
+ *= require library/jquery-ui/jquery-ui-1.10.3.custom.min
+ *= require bootstrap.min
+ *= require bootstrap-theme.min
+ *= require library/font-awesome/css/font-awesome.min
+ *= require toastr.min
+ *= require site.css
  */
