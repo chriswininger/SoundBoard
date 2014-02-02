@@ -30,6 +30,9 @@ gem 'jbuilder', '~> 1.2'
 # Authentication engine
 gem 'devise'
 
+# Google Authentication support
+gem 'omniauth-google-oauth2'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

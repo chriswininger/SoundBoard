@@ -2,14 +2,13 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="http://www.youtube.com/user/chrisbrakeshow?feature=watch">The Chris Brake Show</a>
-
- <!-- Test if the User is connected -->
-           <% if user_signed_in? %>
+            <!-- Test if the User is connected -->
+            <% if user_signed_in? %>
            	<!-- display the 'display name' of the user -->
-              <a class="navbar-brand" href="users/sign_out">Logout</a>
+                <%= link_to('Logout', destroy_user_session_path, :class => 'navbar-brand', :method => :delete) %> 
             <% else %>
                 <!-- display the login form -->
-                <a class="navbar-brand" href="users/sign_in">Login</a>
+                <%= link_to('Login', new_user_session_path, :class=>'navbar-brand')  %> 
             <% end %>
 
         </div>
