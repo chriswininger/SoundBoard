@@ -26,4 +26,6 @@ SoundBoard::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
+  config.google_client_id = '995671200547-phnqfa5s74lgri09i80u4h5kpn795nr7.apps.googleusercontent.com'
 end

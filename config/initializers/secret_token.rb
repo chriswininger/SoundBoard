@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-SoundBoard::Application.config.secret_key_base = '4c5eb85049b840be242988c2b45985e76ce7793db560d80b85b9c06cd8831e434e19963e2be7d27c0f8efe736d24fba1e5c8c29e2156433893f03d1aeb355245'
+SoundBoard::Application.config.secret_key_base = 'a1319cfc21836009825a6b23df9152698f31be073a2662abdfdb82322891ed71b33dac43ba581e6833df6a3500d86a992b14004c29ac4a60e253100761d668d7'

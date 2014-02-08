@@ -1,62 +1,33 @@
-<div id="top-nav" class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="http://www.youtube.com/user/chrisbrakeshow?feature=watch">The Chris Brake Show</a>
-        </div>
-
-       
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li>
-                    <!-- Test if the User is connected -->
-                    <% if user_signed_in? %>
-                    <!-- display the 'display name' of the user -->
-                    <%= link_to('Logout', destroy_user_session_path, :class => 'navbar-nav', :method => :delete) %> 
-                    <% else %>
-                    <!-- display the login form -->
-                    <%= link_to('Login', new_user_session_path, :class=>'navbar-nav') %> 
-                    <% end %>
-                </li>
-            </ul>
-        </div>
+<div id="banner" class="row">
+    <div id="banner-row" class="col-lg-12 page-header">
+        <!-- <h3>Chris Brake Show Sound Board Cliporater Maddnes!!!</h3> -->
+        <img class="img-responsive" src="assets/banner.png" >
     </div>
 </div>
 
-<div id="main-content" class="container">
-    <div id="banner" class="row">
-        <div id="banner-row" class="col-lg-12 page-header">
-            <!-- <h3>Chris Brake Show Sound Board Cliporater Maddnes!!!</h3> -->
-            <img class="img-responsive" src="assets/banner.png" >
-        </div>
-    </div>
+<div id="iphoneKludge"  hidden>
+    <button id="init" class="btn-block" ontouchstart="javascript:SoundBoard.activateAudioForIOS();">Activate Audio</button>
+    <hr />
+</div>
 
-    <div id="iphoneKludge"  hidden>
-        <button id="init" class="btn-block" ontouchstart="javascript:SoundBoard.activateAudioForIOS();">Activate Audio</button>
-        <hr />
-    </div>
+<div id="sound-board" class="row" data-bind="foreach: clips">
+    <div class="col-xs-6 col-md-2">
+        <a href="#" class="thumbnail disabled soundboard-clip" data-bind="click: $root.playClip">
+            <img data-toggle="tooltip" data-bind="attr:{src: defaultImage, alt: clipInfo, title: clipInfo }, playbackImage: isPlaying" class="img-responsive img-rounded disabled" />
+        </a>
 
-    <div id="sound-board" class="row" data-bind="foreach: clips">
-        <div class="col-xs-6 col-md-2">
-            <a href="#" class="thumbnail disabled soundboard-clip" data-bind="click: $root.playClip">
-                <img data-toggle="tooltip" data-bind="attr:{src: defaultImage, alt: clipInfo, title: clipInfo }, playbackImage: isPlaying" class="img-responsive img-rounded disabled" />
-            </a>
+        <script type="text/javascript">
+            if (!jPhong.deviceInfo.supportsAudioContext()) {
+                var fallBack = '<audio preload hidden class="soundboard-clip-audio" data-bind="foreach: clipSources, event: { ended: $root.clipEnded, loadstart: $root.loading, canplay: $root.canPlay }">' +
+                    '<source data-bind="attr:{src: url, type: mediaType }">' +
+                    '</audio>';
 
-            <script type="text/javascript">
-                if (!jPhong.deviceInfo.supportsAudioContext()) {
-                    var fallBack = '<audio preload hidden class="soundboard-clip-audio" data-bind="foreach: clipSources, event: { ended: $root.clipEnded, loadstart: $root.loading, canplay: $root.canPlay }">' +
-                        '<source data-bind="attr:{src: url, type: mediaType }">' +
-                        '</audio>';
-
-                    document.write(fallBack);
-                }
-            </script>
+                document.write(fallBack);
+            }
+        </script>
 
 
-            <span class="soundboard-clip-load" data-bind="loadingSpinner: isLoading"><i class="fa fa-spinner fa-spin"></i>Loading...</span>
-        </div>
+        <span class="soundboard-clip-load" data-bind="loadingSpinner: isLoading"><i class="fa fa-spinner fa-spin"></i>Loading...</span>
     </div>
 </div>
+
