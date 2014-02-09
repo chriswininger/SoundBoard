@@ -6,6 +6,7 @@
 
     $(function(){
         viewModel = new SoundBoardModel(getClips);
+        SoundBoard.viewModel = viewModel;
         ko.applyBindings(viewModel);
 
         if (jPhong.deviceInfo.isIOS()) {
@@ -30,6 +31,7 @@
         var self = this;
 
         self.clips  = ko.observableArray();
+        self.currentClip = ko.observable();
 
         self.mapData = function (data) {
             $.map(data, function(i, n){
@@ -98,12 +100,21 @@
             self.mapData(data);
         });
 
+        self.setCurrentClip = function (id) {
+            var clip = _.find(self.clips(), function (c) {
+                return c.id === id;
+            });
+
+            if (clip) self.currentClip(clip);
+        };
+
     }
 
     // Instantiate a new clip
     function Clip (data) {
         var self = this;
 
+        this.id = data.id;
         this.clipSources = data.sound_board_clip_sources;
         this.defaultImage = data.default_image;
         this.hoverImage = data.hover_image;
@@ -249,6 +260,7 @@
     // Expose methods globally
     var SoundBoard = {
         activateAudioForIOS: activateAudioForIOS,
+        viewModel: viewModel
     };
 
     window.SoundBoard = SoundBoard;
