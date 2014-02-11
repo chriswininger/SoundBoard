@@ -7,4 +7,5 @@
 //= require library/sammy-0.7.4
 //= require library/toastr
 //= require soundboard
+//= require clip
 //= require page-router

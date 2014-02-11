@@ -49,7 +49,20 @@
     <div id="clip-edit" hidden>
          <div id="clip-editor" class="row" data-bind="with: currentClip">
             <h3>Edit Clip <span data-bind="text: id"></span></h3>
-            <label>info: </label><input type="text" data-bind="value: clipInfo"></input>
+            <div class="col-xs-12">
+                <label>info: </label><input type="text" data-bind="value: clipInfo"></input>
+            </div>
+
+            <div class="col-xs-12">
+                <input id="fileClipUpload" type="file"></input>
+            </div>
+
+            <div class="col-xs-6">
+                <button id="btnSaveClip">Save Clip</button>
+            </div>
+             <div class="col-xs-6">
+                <button id="btnCancelClipEdit">Cancel</button>
+            </div>
          </div>
     </div>
 </div>

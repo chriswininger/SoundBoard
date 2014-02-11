@@ -13,6 +13,7 @@
 			$(function () {
 				if (clipID){
 					SoundBoard.viewModel.setCurrentClip(parseInt(clipID));
+					var clip = new window.SoundBoard.Clip(SoundBoard.viewModel.currentClip());
 					$('#soundboard-main').hide();
 					$('#clip-edit').show();
 				}
