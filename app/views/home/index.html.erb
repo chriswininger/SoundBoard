@@ -7,7 +7,7 @@
 
 <div id="route-container">
     <!-- Main Page -->
-    <div id="soundboard-main">
+    <div class="spa-page" id="soundboard-main">
         <div id="iphoneKludge"  hidden>
             <button id="init" class="btn-block" ontouchstart="javascript:SoundBoard.activateAudioForIOS();">Activate Audio</button>
             <hr />
@@ -46,7 +46,7 @@
     </div>
 
     <!-- Clip Edit Page -->
-    <div id="clip-edit" hidden>
+    <div class="spa-page" id="clip-edit" hidden>
          <div id="clip-editor" class="row" data-bind="with: currentClip">
             <h3>Edit Clip <span data-bind="text: id"></span></h3>
             <div class="col-xs-12">
@@ -65,12 +65,11 @@
             </div>
          </div>
     </div>
-</div>
 
- <!-- Clip Context Menu -->
-<div id="context-menu">
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="#/clip/1" tabindex="-1">Edit Clip</a></li>
-        <li><a href="#/delete-clip" tabindex="-1">Delete Clip</a></li>
-    </ul>
+    <!-- Upload Page -->
+    <div class="spa-page" id="upload-page" hidden>
+        <% form_tag({ controller: 'images', action: 'upload' }, multipart: true) do %>
+            <%= file_field_tag 'picture' %>
+        <% end %>
+    </div>
 </div>
