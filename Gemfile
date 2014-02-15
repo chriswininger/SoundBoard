@@ -33,6 +33,8 @@ gem 'devise'
 # Google Authentication support
 gem 'omniauth-google-oauth2'
 
+gem 'remotipart', '~> 1.2'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

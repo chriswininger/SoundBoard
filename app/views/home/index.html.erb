@@ -68,8 +68,10 @@
 
     <!-- Upload Page -->
     <div class="spa-page" id="upload-page" hidden>
-        <% form_tag({ controller: 'images', action: 'upload' }, multipart: true) do %>
+        <h3>Uploads</h3>
+        <%= form_tag({ controller: 'images', action: 'upload' }, multipart: true,  remote: true ) do %>
             <%= file_field_tag 'picture' %>
+            <%= submit_tag("Upload") %>
         <% end %>
     </div>
 </div>

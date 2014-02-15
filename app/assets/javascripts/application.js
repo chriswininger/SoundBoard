@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.remotipart
 //= require turbolinks
 //= require library/bootstrap
 //= require library/jquery-ui/jquery-ui-1.10.3.custom.min
