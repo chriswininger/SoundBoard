@@ -1,32 +1,41 @@
 (function () {
-	var pages = ['soundboard-main', 'clip-edit', 'upload-page'];
+	var pages = ['soundboard-main', 'clip-edit', 'upload-page'],
+		imageUploadPage = new ImageUploadPage();
+	
+	// Initialze the soundboard and it's clips	
+	var soundBoardPage = new SoundBoard.SoundBoardPage(function () {
+		var appRouter = $.sammy('#route-container', function(){
+		   // Setup routes within the soundboard page
 
-    var appRouter = $.sammy('#route-container', function(){
+			// home
+			this.get('#/', function (context){
+	            showPage('soundboard-main');
+	       	});
 
-       this.get('#/', function (context){
-            showPage('soundboard-main');
-       });
+			// edit
+			this.get('#/clip/:id', function () {
+				var clipID = this.params['id'];
 
-		this.get('#/clip/:id', function () {
-			var clipID = this.params['id'];
-
-			$(function () {
-				if (clipID){
-					SoundBoard.viewModel.setCurrentClip(parseInt(clipID));
-					var clip = new window.SoundBoard.Clip(SoundBoard.viewModel.currentClip());
-					$('#soundboard-main').hide();
-					showPage('clip-edit');
-				}
+				$(function () {
+					if (clipID){
+						soundBoardPage.viewModel.setCurrentClip(parseInt(clipID));
+						var clip = new window.SoundBoard.Clip(soundBoardPage.viewModel.currentClip());
+						showPage('clip-edit');
+					}
+				});
 			});
-		});
 
-		this.get('#/uploads', function () {
-			showPage('upload-page');
-		});
-    });
+			// upload image
+			this.get('#/uploads', function () {
+				imageUploadPage.loadPage();
+				showPage('upload-page');
+			});
+	    });
 
-    appRouter.run('#/');
+	    appRouter.run('#/');	
+	});
 
+  	// show and hide pages
     function showPage(pageName) {
     	_.each(pages, function(p) {
     		if (pageName !== p) return $('#' + p).hide();

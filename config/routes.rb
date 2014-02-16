@@ -8,7 +8,7 @@ SoundBoard::Application.routes.draw do
 
   resources :sound_board_clip_sources, :defaults => { :format => 'json' }, :constraints => {:format => /(json|xml)/}
 
-  resources :images
+  resources :images, :defaults => { :format => 'json' }, :constraints => {:format => /(json|xml)/}
   post 'images/upload'
 
   # The priority is based upon order of creation: first created -> highest priority.

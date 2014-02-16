@@ -1,0 +1,1 @@
+json.extract! @image, :id, :title, :path, :url, :created_at, :updated_at

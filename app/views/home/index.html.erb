@@ -69,9 +69,22 @@
     <!-- Upload Page -->
     <div class="spa-page" id="upload-page" hidden>
         <h3>Uploads</h3>
-        <%= form_tag({ controller: 'images', action: 'upload' }, multipart: true,  remote: true ) do %>
-            <%= file_field_tag 'picture' %>
-            <%= submit_tag("Upload") %>
+        <%= form_tag({ controller: 'images', action: 'upload' }, multipart: true,  remote: true, id: :frmImageUpload, role: :form ) do %>
+            <div class="form-group">
+                <%= label_tag @image_title, 'Title: ' %>
+                <%= text_field :image, :title %>
+            </div>
+
+            <div class="form-group">
+                <%= label_tag @image_file, 'Select File: ' %>
+                <%= file_field :image, :file %>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <%= submit_tag("Upload", :class => 'btn btn-default') %>
+                </div>
+            </div>
         <% end %>
     </div>
 </div>

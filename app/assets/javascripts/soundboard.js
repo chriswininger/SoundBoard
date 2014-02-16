@@ -1,33 +1,68 @@
 (function(){
-    var viewModel,
-        ctx,
+    var ctx,
         buf,
         mainVol;
 
-    $(function(){
-        viewModel = new SoundBoardModel(getClips);
-        SoundBoard.viewModel = viewModel;
-        ko.applyBindings(viewModel);
+    function SoundBoardPage (loaded) {
+        var self = this;
 
-        if (jPhong.deviceInfo.isIOS()) {
-            $('#iphoneKludge').show();
-        }
+        $(function(){
+            ko.applyBindings(self.viewModel);
 
-        if (jPhong.deviceInfo.supportsAudioContext()){
-            initAudio();
-        } else {
-            toastr.info('WebAudio API Is Not Available -- Using Fallback');
-        }
-    });
+            if (jPhong.deviceInfo.isIOS()) {
+                $('#iphoneKludge').show();
+            }
 
-    function getClips(complete) {
-        // http://local.thechrisbrakeshow.pepperpants.com/clip-rest
-        $.getJSON("/clips", function(data) {
-            complete(data);
+            if (jPhong.deviceInfo.supportsAudioContext()){
+                initAudio();
+            } else {
+                toastr.info('WebAudio API Is Not Available -- Using Fallback');
+            }
+        });
+
+        /* --- Custom binding handlers --- */
+        ko.bindingHandlers.playbackImage = {
+            update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                //console.log('updated');
+                var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
+
+                if (valueUnwrapped) {
+                    $(element).attr('src', viewModel.playingImage);
+                } else {
+                    $(element).attr('src', viewModel.defaultImage);
+                }
+            }
+        };
+
+        ko.bindingHandlers.loadingSpinner = {
+            update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                console.log('updated');
+                var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
+
+                if (valueUnwrapped) {
+                    $(element).show();
+                } else {
+                    $(element).hide();
+                }
+            }
+        };
+
+        this.viewModel = new SoundBoardModel(this.getClips, function () {
+            if (_.isFunction(loaded)) loaded();
         });
     }
 
-    function SoundBoardModel(dataFetcher) {
+    _.extend(SoundBoardPage.prototype, {
+        loadPage: function () {},
+        getClips: function (complete) {
+            // http://local.thechrisbrakeshow.pepperpants.com/clip-rest
+            $.getJSON("/clips", function(data) {
+                complete(data);
+            });
+        }
+    });
+
+    function SoundBoardModel(dataFetcher, clipsLoaded) {
         var self = this;
 
         self.clips  = ko.observableArray();
@@ -98,9 +133,10 @@
         // Init Model
         dataFetcher(function(data) {
             self.mapData(data);
+            if (_.isFunction(clipsLoaded)) clipsLoaded()
         });
 
-        self.setCurrentClip = function (id) {
+        self.setCurrentClip = function (id, callback) {
             var clip = _.find(self.clips(), function (c) {
                 return c.id === id;
             });
@@ -146,33 +182,6 @@
         }
     }
 
-    /* --- Custom binding handlers --- */
-    ko.bindingHandlers.playbackImage = {
-        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            //console.log('updated');
-            var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
-
-            if (valueUnwrapped) {
-                $(element).attr('src', viewModel.playingImage);
-            } else {
-                $(element).attr('src', viewModel.defaultImage);
-            }
-        }
-    };
-
-    ko.bindingHandlers.loadingSpinner = {
-        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            console.log('updated');
-            var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
-
-            if (valueUnwrapped) {
-                $(element).show();
-            } else {
-                $(element).hide();
-            }
-        }
-    };
-
     /* --- Web Audio API Methods --- */
     function createAudioContext(){
         if (typeof window.AudioContext !== 'undefined'){
@@ -183,6 +192,7 @@
             return new webkitAudioContext();
         }
     }
+
     function initAudio() {
         try {
             normailizeWebAPI();
@@ -258,10 +268,11 @@
     }
 
     // Expose methods globally
-    var SoundBoard = {
+    var SoundBoard = window.SoundBoard || {};
+    var SoundBoard = _.extend(SoundBoard, {
         activateAudioForIOS: activateAudioForIOS,
-        viewModel: viewModel
-    };
+        SoundBoardPage: SoundBoardPage
+    });
 
     window.SoundBoard = SoundBoard;
 })();

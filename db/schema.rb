@@ -11,13 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140202160938) do
+ActiveRecord::Schema.define(version: 20140216024452) do
 
   create_table "clips", force: true do |t|
     t.string   "title",         null: false
     t.string   "default_image", null: false
     t.string   "playing_image", null: false
-    t.string   "info"
+    t.string   "info",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "images", force: true do |t|
+    t.string   "title",      null: false
+    t.string   "path",       null: false
+    t.string   "url",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

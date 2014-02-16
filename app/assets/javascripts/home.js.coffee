@@ -8,4 +8,5 @@
 //= require library/toastr
 //= require soundboard
 //= require clip
+//= require image-upload
 //= require page-router
