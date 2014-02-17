@@ -47,29 +47,26 @@
 
     <!-- Clip Edit Page -->
     <div class="spa-page" id="clip-edit" hidden>
-         <div id="clip-editor" class="row" data-bind="with: currentClip">
-            <h3>Edit Clip <span data-bind="text: id"></span></h3>
-            <div class="col-xs-12">
-                <label>info: </label><input type="text" data-bind="value: clipInfo"></input>
-            </div>
+         <form role="form">
+            <div id="clip-editor" data-bind="with: currentClip">
+                <h3>Edit Clip <span data-bind="text: id"></span></h3>
+                <div class="form-group">
+                    <label>info: </label>
+                    <input type="text" data-bind="value: clipInfo"></input>
+                </div>
 
-            <div class="col-xs-12">
-                <input id="fileClipUpload" type="file"></input>
+                <div class="form-group">
+                    <button id="btnSaveClip">Save Clip</button>
+                    <button id="btnCancelClipEdit">Cancel</button>
+                </div>
             </div>
-
-            <div class="col-xs-6">
-                <button id="btnSaveClip">Save Clip</button>
-            </div>
-             <div class="col-xs-6">
-                <button id="btnCancelClipEdit">Cancel</button>
-            </div>
-         </div>
+         </form>
     </div>
 
-    <!-- Upload Page -->
+    <!-- Upload Image Page -->
     <div class="spa-page" id="upload-page" hidden>
         <h3>Uploads</h3>
-        <%= form_tag({ controller: 'images', action: 'upload' }, multipart: true,  remote: true, id: :frmImageUpload, role: :form ) do %>
+        <%= form_tag({ controller: 'images', action: 'create' }, multipart: true,  remote: true, id: :frmImageUpload, role: :form ) do %>
             <div class="form-group">
                 <%= label_tag @image_title, 'Title: ' %>
                 <%= text_field :image, :title %>
@@ -86,5 +83,15 @@
                 </div>
             </div>
         <% end %>
+
+        <h3>Uploaded images</h3>
+        <div id="sound-board" class="row" data-bind="foreach: imageFiles">
+            <div class="col-xs-6 col-md-2">
+                <a href="#" class="thumbnail disabled soundboard-clip">
+                    <img data-bind="attr:{src: url, alt: title, title: title }" class="img-responsive img-rounded disabled" />
+                </a>
+            </div>
+        </div>
+
     </div>
 </div>

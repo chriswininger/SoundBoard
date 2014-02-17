@@ -1,16 +1,23 @@
 (function () {
 	var self;
 
+	// Exports
+    var SoundBoard = window.SoundBoard || {};
+    SoundBoard = _.extend(SoundBoard, {
+        ClipEditPage: ClipEditPage
+    });
+    window.SoundBoard = SoundBoard;
+
 	// Takes the knockout clip model to which the page is bound
-	var Clip = function (clip) {
+	function ClipEditPage (clip) {
 		this.clip = clip;
 		self = this;
 		$(function () {
 			self.pageLoad();
 		});
-	};
+	}
 
-	_.extend(Clip.prototype, {
+	_.extend(ClipEditPage.prototype, {
 		pageLoad: function() {
 			$(function() {
 				$('#fileClipUpload').on('change', function(e){
@@ -49,6 +56,4 @@
 		}
 	});
 
-	if (!window.SoundBoard) window.SoundBoard = {};
-	window.SoundBoard.Clip = Clip;
 })();

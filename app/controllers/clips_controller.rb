@@ -31,7 +31,7 @@ class ClipsController < ApplicationController
         format.xml { render action: 'show', status: :created, location: @clip }
       else
         format.json { render json: @clip.errors, status: :unprocessable_entity }
-        format.xml { render json: @clip.errors, status: :unprocessable_entity }
+        format.xml { render xml: @clip.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -44,7 +44,7 @@ class ClipsController < ApplicationController
         format.html { redirect_to @clip, notice: 'Clip was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render xml: @clip.errors, status: :unprocessable_entity }
         format.json { render json: @clip.errors, status: :unprocessable_entity }
       end
     end
