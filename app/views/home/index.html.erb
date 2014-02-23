@@ -16,7 +16,7 @@
         <div id="sound-board" class="row" data-bind="foreach: clips">
             <div class="col-xs-6 col-md-2" data-toggle="context" data-bind="attr: { 'data-target': '#context-menu-' + id }">
                 <a href="#" class="thumbnail disabled soundboard-clip" data-bind="click: $root.playClip">
-                    <img data-toggle="tooltip" data-bind="attr:{src: defaultImage, alt: clipInfo, title: clipInfo }, playbackImage: isPlaying" class="img-responsive img-rounded disabled" />
+                    <img data-toggle="tooltip" data-bind="attr:{src: defaultImage.url, alt: clipInfo, title: clipInfo }, playbackImage: isPlaying" class="img-responsive img-rounded disabled" />
                 </a>
 
                 <script type="text/javascript">
@@ -47,12 +47,29 @@
 
     <!-- Clip Edit Page -->
     <div class="spa-page" id="clip-edit" hidden>
-         <form role="form">
+        <form role="form">
             <div id="clip-editor" data-bind="with: currentClip">
+                <h1>hello </h1>
                 <h3>Edit Clip <span data-bind="text: id"></span></h3>
                 <div class="form-group">
                     <label>info: </label>
                     <input type="text" data-bind="value: clipInfo"></input>
+                </div>
+
+                <div id="clip-sources" class="form-group">
+                    <label>Clip Sources: </label>
+                    <select data-bind="options: $root.imageFiles, optionsText: function(item) { return item.title; }, value: $root.selectedClipSource"></select>
+                    <button>Add Source</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Default Image: </label>
+                    <select data-bind="options: $root.imageFiles, optionsText: function(item) { return item.title; }, value: defaultImage"></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Playing Image: </label>
+                    <select data-bind="options: $root.imageFiles, optionsText: function(item) { return item.title; }, value: playingImage"></select>
                 </div>
 
                 <div class="form-group">

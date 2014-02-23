@@ -38,9 +38,9 @@
                 var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
 
                 if (valueUnwrapped) {
-                    $(element).attr('src', viewModel.playingImage);
+                    $(element).attr('src', viewModel.imagePlaying.url);
                 } else {
-                    $(element).attr('src', viewModel.defaultImage);
+                    $(element).attr('src', viewModel.defaultImage.url);
                 }
             }
         };

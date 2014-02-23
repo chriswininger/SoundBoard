@@ -10,8 +10,9 @@
         var self = this;
 
         this.clips  = ko.observableArray();
-        this.currentClip = ko.observable();
         this.imageFiles = ko.observableArray();
+        this.currentClip = ko.observable();
+        this.selectedClipSource = ko.observable();
 
         // Init Model
         dataFetcher(function (data) {
@@ -95,10 +96,10 @@
 
         this.id = data.id;
         this.clipSources = data.sound_board_clip_sources;
-        this.defaultImage = data.default_image;
-        this.hoverImage = data.hover_image;
         this.clipInfo = data.info;
         this.playingImage = data.playing_image;
+        this.defaultImage = new SoundBoard.ImageFileModel(data.image_default);
+        this.imagePlaying = new SoundBoard.ImageFileModel(data.image_playing);
         this.buffer = null;
         this.clipNode = null;
         this.isPlaying = ko.observable(false);
@@ -124,4 +125,18 @@
             tryLoad(this.clipSources[i++].url);
         }
     }
+
+    _.extend(Clip.prototype, {
+        toObjectModel: function () {
+            return {
+                id: this.id,
+                info: this.clipInfo,
+                image_default_id: this.defaultImage.id,
+                image_playing_id: this.imagePlaying.id,
+                // todo:: Remove below line
+                playing_image: this.playingImage,
+                image_default: this.defaultImage
+            };
+        }
+    });
 })();

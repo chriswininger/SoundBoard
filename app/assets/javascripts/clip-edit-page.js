@@ -26,7 +26,7 @@
 
 				$('#btnSaveClip').click(function() {
 					self.saveClip();
-					return true;
+					return false;
 				});
 			});
 		},
@@ -39,11 +39,9 @@
 			$.ajax({
 				url: '/clips/' + self.clip.id,
 				type: 'PUT',
-				data: { clip: self.clip },
+				data: { clip: self.clip.toObjectModel() },
 				cache: false,
 				dataType: 'json',
-				contentType: false,
-				processData: false,
 				success: function(data, textStatus, jqXHR) {
 					alert('we won!!!');
 				},

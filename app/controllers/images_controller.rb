@@ -50,7 +50,7 @@ class ImagesController < ApplicationController
 	     	else
 	        	format.json { render json: @image.errors, status: :unprocessable_entity }
 	        	format.xml { render json: @image.errors, status: :unprocessable_entity }
-	      	end
+			end
       	end
 	end
 

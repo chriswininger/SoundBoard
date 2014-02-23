@@ -6,6 +6,7 @@
 //= require library/respond.min
 //= require library/sammy-0.7.4
 //= require library/toastr
+//= require image-file-model
 //= require soundboard-view-model
 //= require soundboard-app
 //= require clip-edit-page

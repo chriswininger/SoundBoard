@@ -6,7 +6,7 @@ class ClipsController < ApplicationController
   def index
     @clips = Clip.all
     respond_to do |format|
-      format.json { render json: @clips.to_json(:include => :sound_board_clip_sources ) }
+      format.json { render json: @clips.to_json(:include => [:sound_board_clip_sources, :image_playing, :image_default ]) }
       format.xml { render xml: @clips }
     end
   end
@@ -15,8 +15,8 @@ class ClipsController < ApplicationController
   # GET /clips/1.json
   def show
     respond_to do |format|
-      format.json { render json: @clip.to_json(:include => :sound_board_clip_sources ) }
-      format.xml { render xml: @clip.to_xml(:include => :sound_board_clip_sources) }
+      format.json { render json: @clip.to_json(:include => [:sound_board_clip_sources, :image_playing, :image_default]) }
+      format.xml { render xml: @clip.to_xml(:include => [:sound_board_clip_sources, :image_playing, :image_default ]) }
     end
   end
 
@@ -68,6 +68,7 @@ class ClipsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def clip_params
-      params.require(:clip).permit(:title, :default_image, :playing_image, :info)
+      puts params.inspect
+      params.require(:clip).permit(:title, :default_image, :playing_image, :info, :image_playing_id, :image_default_id)
     end
 end

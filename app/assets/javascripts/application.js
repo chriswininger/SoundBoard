@@ -18,3 +18,4 @@
 //= require library/jquery-ui/jquery-ui-1.10.3.custom.min
 //= require library/jquery.ui.touch-punch
 //= require library/underscore
+//= require utils

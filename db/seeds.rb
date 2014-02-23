@@ -6,10 +6,24 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 puts "---Seeding Database---"
+
+images = [
+	{
+		:title => 'pinkSquare_Small.png',
+		:url => 'http://localhost:3000/uploads/images/pinkSquare_Small.png',
+		:path => '/Users/chris/PhpstormProjects/SoundBoard/public/uploads/images/pinkSquare_Small.png'
+	},
+	{
+		:title => 'blueSquare_Small.png',
+		:url => 'http://localhost:3000/uploads/images/blueSquare_Small.png',
+		:path => '/Users/chris/PhpstormProjects/SoundBoard/public/uploads/images/blueSquare_Small.png'
+	}
+]
+
 clips = [
 	{
-		:title => 'Laughs: Bring it back', 
-		:default_image => 'clips/images/pinkSquare_Small.png', 
+		:title => 'Laughs: Bring it back',
+		:default_image => 'clips/images/pinkSquare_Small.png',
 		:playing_image => 'clips/images/blueSquare_Small.png',
 		:info => 'Laughs: Bring it back',
 		:sound_board_clip_sources => [{
@@ -23,8 +37,8 @@ clips = [
 		]
 	},
 	{
-		:title => 'Brake: Does this really matter', 
-		:default_image => 'clips/images/pinkSquare_Small.png', 
+		:title => 'Brake: Does this really matter',
+		:default_image => 'clips/images/pinkSquare_Small.png',
 		:playing_image => 'clips/images/blueSquare_Small.png',
 		:info => 'Brake: Does this really matter',
 		:sound_board_clip_sources => [{
@@ -38,8 +52,8 @@ clips = [
 		]
 	},
 	{
-		:title => 'Sarah: Yeah, this is so awesome', 
-		:default_image => 'clips/images/pinkSquare_Small.png', 
+		:title => 'Sarah: Yeah, this is so awesome',
+		:default_image => 'clips/images/pinkSquare_Small.png',
 		:playing_image => 'clips/images/blueSquare_Small.png',
 		:info => 'Sarah: Yeah, this is so awesome',
 		:sound_board_clip_sources => [{
@@ -53,8 +67,8 @@ clips = [
 		]
 	},
 	{
-		:title => 'John: I Really Vote for a Restart', 
-		:default_image => 'clips/images/pinkSquare_Small.png', 
+		:title => 'John: I Really Vote for a Restart',
+		:default_image => 'clips/images/pinkSquare_Small.png',
 		:playing_image => 'clips/images/blueSquare_Small.png',
 		:info => 'John: I Really Vote for a Restart',
 		:sound_board_clip_sources => [{
@@ -68,8 +82,8 @@ clips = [
 		]
 	},
 	{
-		:title => 'Brake: Apologize to my Sizner', 
-		:default_image => 'clips/images/pinkSquare_Small.png', 
+		:title => 'Brake: Apologize to my Sizner',
+		:default_image => 'clips/images/pinkSquare_Small.png',
 		:playing_image => 'clips/images/blueSquare_Small.png',
 		:info => 'Brake: Apologize to my Sizner',
 		:sound_board_clip_sources => [{
@@ -83,8 +97,8 @@ clips = [
 		]
 	},
 	{
-		:title => 'Sarah: Whos NPR?', 
-		:default_image => 'clips/images/pinkSquare_Small.png', 
+		:title => 'Sarah: Whos NPR?',
+		:default_image => 'clips/images/pinkSquare_Small.png',
 		:playing_image => 'clips/images/blueSquare_Small.png',
 		:info => 'Sarah: Whos NPR?',
 		:sound_board_clip_sources => [{
@@ -99,22 +113,42 @@ clips = [
 	}
 ]
 
+images.each do |image|
+	Image.find_or_create_by_title(image[:title]) do |i|
+		i.url = image[:url]
+		i.path = image[:url]
+
+		puts "saveing image " + i.title
+		i.save
+	end
+end
+
+playingImage = Image.find_by_title('blueSquare_Small.png')
+playing_image_id = playingImage.id
+
+defaultImage = Image.find_by_title('pinkSquare_Small.png')
+default_image_id = defaultImage.id
 
 clips.each do |clip|
 	Clip.find_or_create_by_title(clip[:title]) do |c|
 		c.default_image = clip[:default_image]
+		c.image_playing_id = playing_image_id
+		c.image_default_id = default_image_id
+		#TODO::Remove playing_image
 		c.playing_image = clip[:playing_image]
+		c.default_image = clip[:default_image]
+
 		c.info = clip[:info]
-		
+
 		puts "saving clip " + c.title
 		c.save
-		
+
 		clip[:sound_board_clip_sources].each do |source|
 			clipSource = c.sound_board_clip_sources.create(source)
 			puts "  saving clip source " + clipSource.path_local
 			clipSource.save
 		end
-		
+
 
 	end
 end
