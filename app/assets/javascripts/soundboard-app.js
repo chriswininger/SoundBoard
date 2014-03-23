@@ -17,6 +17,7 @@
     function SoundBoardApp (loaded) {
         var self = this;
 
+
         $(function(){
             ko.applyBindings(self.viewModel);
 

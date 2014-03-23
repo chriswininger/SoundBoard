@@ -40,10 +40,14 @@ class ClipsController < ApplicationController
   # PATCH/PUT /clips/1.json
   def update
     respond_to do |format|
-      if @clip.update(clip_params[:clip])
+      puts clip_params.inspect
+      if @clip.update(clip_params)
+        puts 'here 1'
+        puts @clip.inspect
         format.html { redirect_to @clip, notice: 'Clip was successfully updated.' }
         format.json { head :no_content }
       else
+        puts 'here 2'
         format.html { render xml: @clip.errors, status: :unprocessable_entity }
         format.json { render json: @clip.errors, status: :unprocessable_entity }
       end
@@ -69,6 +73,6 @@ class ClipsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def clip_params
       puts params.inspect
-      params.require(:clip).permit(:title, :default_image, :playing_image, :info, :image_playing_id, :image_default_id)
+      params.require(:clip).permit(:title, :default_image, :playing_image, :info, :image_playing_id, :image_default_id, :id)
     end
 end

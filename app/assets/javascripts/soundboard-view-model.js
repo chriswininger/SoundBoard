@@ -98,8 +98,10 @@
         this.clipSources = data.sound_board_clip_sources;
         this.clipInfo = data.info;
         this.playingImage = data.playing_image;
+
         this.defaultImage = new SoundBoard.ImageFileModel(data.image_default);
         this.imagePlaying = new SoundBoard.ImageFileModel(data.image_playing);
+
         this.buffer = null;
         this.clipNode = null;
         this.isPlaying = ko.observable(false);
@@ -134,8 +136,7 @@
                 image_default_id: this.defaultImage.id,
                 image_playing_id: this.imagePlaying.id,
                 // todo:: Remove below line
-                playing_image: this.playingImage,
-                image_default: this.defaultImage
+                playing_image: this.playingImage
             };
         }
     });
