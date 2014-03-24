@@ -6,22 +6,41 @@
     window.SoundBoard = SoundBoard;
 
     /* --- Application View Model Class --- */
-    function SoundBoardViewModel(dataFetcher, clipsLoaded) {
+    function SoundBoardViewModel(clipDataFetcher, clipImageFetcher) {
         var self = this;
 
         this.clips  = ko.observableArray();
         this.imageFiles = ko.observableArray();
         this.currentClip = ko.observable();
         this.selectedClipSource = ko.observable();
-
-        // Init Model
-        dataFetcher(function (data) {
-            self.mapData(data);
-            if (_.isFunction(clipsLoaded)) clipsLoaded();
-        });
+        this.clipDataFetcher = clipDataFetcher;
+        this.clipImageFetcher = clipImageFetcher;
     }
 
     _.extend(SoundBoardViewModel.prototype, {
+        loadData: function (complete) {
+            var self = this;
+            // clear data 
+            self.clips([]);
+            
+            this.clipDataFetcher(function (data) {
+                self.mapData(data);
+                if (_.isFunction(complete)) complete();
+            });
+        },
+        loadImageFiles: function (complete) {
+            var self = this;
+
+            this.imageFiles([]); // clear
+            // reload
+            this.getImageFiles(function (images) {
+                $.map(images, function(img) {
+                    self.imageFiles.push(img);
+                });
+
+                if (_.isFunction(complete)) complete();
+            });
+        },
         mapData: function (data) {
             var self = this;
             $.map(data.clips, function(i, n){
@@ -81,6 +100,11 @@
         },
         canPlay: function (model, event) {
             model.isLoading(false);
+        },
+        getImageFiles: function (complete) {
+            $.getJSON('/images', function (images) {
+                complete(images);
+            });
         },
         setCurrentClip: function (id, callback) {
             var clip = _.find(this.clips(), function (c) {

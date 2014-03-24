@@ -37,11 +37,13 @@ class ImagesController < ApplicationController
 	  		file.write(uploaded_io.read)
 	  	end
 
+	  	puts "here 1"
 		@image = Image.new({
 			:title => image_params[:title],
 			:path => filePath.to_s,
 			:url =>  request.protocol + request.host_with_port + '/uploads/images/' + uploaded_io.original_filename
 		})
+		puts "here 2"
 
 		respond_to do |format|
 			if @image.save

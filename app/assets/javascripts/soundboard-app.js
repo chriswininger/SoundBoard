@@ -14,9 +14,8 @@
     window.SoundBoard = SoundBoard;
 
     //TODO::Rename SoundBoardPage to SoundBoardApp
-    function SoundBoardApp (loaded) {
+    function SoundBoardApp () {
         var self = this;
-
 
         $(function(){
             ko.applyBindings(self.viewModel);
@@ -59,29 +58,36 @@
             }
         };
 
-        this.viewModel = new SoundBoard.SoundBoardViewModel(this.getAssets, function () {
-            if (_.isFunction(loaded)) loaded();
-        });
+        this.viewModel = new SoundBoard.SoundBoardViewModel(this.getAssets, this.getImageAssets);
     }
 
     _.extend(SoundBoardApp.prototype, {
-        loadPage: function () {},
+        loadPage: function (loaded) {
+            this.viewModel.loadData(function () {
+                if (_.isFunction(loaded)) loaded();
+            });
+        },
         getAssets: _.bind(function (complete) {
             var data = {}, self = this;
-            self.getClips(function (clips) {
+            self.fetchClips(function (clips) {
                 data.clips = clips;
-                self.getImageFiles(function (images){
+                self.getImageAssets(function (images) {
                     data.images = images;
                     complete(data);
                 });
             });
         }, SoundBoardApp.prototype),
-        getClips: function (complete){
+        getImageAssets: function (complete) {
+            this.fetchImageFiles(function (images){
+                complete(images);
+            });
+        },
+        fetchClips: function (complete){
              $.getJSON('/clips', function(clips) {
                 complete(clips);
              });
         },
-        getImageFiles: function (complete) {
+        fetchImageFiles: function (complete) {
             $.getJSON('/images', function (images) {
                 complete(images);
             });
