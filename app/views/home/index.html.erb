@@ -56,20 +56,22 @@
                     <input type="text" data-bind="value: clipInfo"></input>
                 </div>
 
-                <div id="clip-sources" class="form-group">
-                    <label>Clip Sources: </label>
-                    <select data-bind="options: $root.imageFiles, optionsText: function(item) { return item.title; }, value: $root.selectedClipSource"></select>
-                    <button>Add Source</button>
-                </div>
-
                 <div class="form-group">
                     <label>Default Image: </label>
-                    <select data-bind="options: $root.imageFiles, optionsText: function(item) { return item.title; }, value: defaultImage"></select>
+                    <select data-bind="options: $root.imageFiles, 
+                        optionsText: 'title', 
+                        optionsValue: 'id',
+                        value: defaultImage">
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label>Playing Image: </label>
-                    <select data-bind="options: $root.imageFiles, optionsText: function(item) { return item.title; }, value: imagePlaying"></select>
+                    <select data-bind="options: $root.imageFiles, 
+                        optionsText: 'title',
+                        optionsValue: 'id', 
+                        value: 'imagePlaying'">
+                    </select>
                 </div>
 
                 <div class="form-group">

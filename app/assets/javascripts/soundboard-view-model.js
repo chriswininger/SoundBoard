@@ -107,11 +107,16 @@
             });
         },
         setCurrentClip: function (id, callback) {
-            var clip = _.find(this.clips(), function (c) {
+            var _clip = _.find(this.clips(), function (c) {
                 return c.id === id;
             });
-
-            if (clip) this.currentClip(clip);
+            if (_clip) {
+                var _imgDef = _.clone(_clip.defaultImage());
+                var _imgPlay = _.clone(_clip.imagePlaying());
+                this.currentClip(_clip);
+                this.currentClip().defaultImage(_imgDef.id);
+                this.currentClip().imagePlaying(_imgPlay.id);
+            }
         }
     });
 
@@ -123,8 +128,8 @@
         this.clipInfo = data.info;
         this.playingImage = data.playing_image;
 
-        this.defaultImage = new SoundBoard.ImageFileModel(data.image_default);
-        this.imagePlaying = new SoundBoard.ImageFileModel(data.image_playing);
+        this.defaultImage = ko.observable(new SoundBoard.ImageFileModel(data.image_default));
+        this.imagePlaying = ko.observable(new SoundBoard.ImageFileModel(data.image_playing));
 
         this.buffer = null;
         this.clipNode = null;
@@ -157,8 +162,8 @@
             return {
                 id: this.id,
                 info: this.clipInfo,
-                image_default_id: this.defaultImage.id,
-                image_playing_id: this.imagePlaying.id,
+                image_default_id: this.defaultImage().id,
+                image_playing_id: this.imagePlaying().id,
                 // todo:: Remove below line
                 playing_image: this.playingImage
             };

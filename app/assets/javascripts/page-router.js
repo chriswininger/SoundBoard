@@ -2,7 +2,7 @@
 	var pages = ['soundboard-main', 'clip-edit', 'upload-page'];
 
 	// Initialze the soundboard and it's clips
-	var soundBoardApp = new SoundBoard.SoundBoardApp();
+	var soundBoardApp = new SoundBoard.SoundBoardApp();	
 	var imageUploadPage = new ImageUploadPage(soundBoardApp.viewModel);
 
 	var appRouter = $.sammy('#route-container', function(){

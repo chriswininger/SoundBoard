@@ -8,5 +8,6 @@
         this.id = data.id;
         this.url = data.url;
         this.path = data.path;
+        this.title = data.title;
     }
 })();
