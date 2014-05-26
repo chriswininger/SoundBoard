@@ -64,8 +64,9 @@
 
     _.extend(SoundBoardApp.prototype, {
         loadPage: function (loaded) {
+            var self = this;
             this.viewModel.loadData(function () {
-                this.isLoaded = true;
+                self.isLoaded = true;
                 if (_.isFunction(loaded)) loaded();
             });
         },

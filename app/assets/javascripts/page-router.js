@@ -15,6 +15,8 @@
 		// Setup routes within the soundboard page
 
 		var mainPage = function (context) {
+			// force reload
+			soundBoardApp.isLoaded = false;
 			showPage('soundboard-main');
 		};
 
@@ -25,9 +27,13 @@
 		// edit
 		this.get('#/clip/:id', function () {
 			var self = this;
-			if (!soundBoardApp.isLoaded) soundBoardApp.loadPage(function () {
+			if (!soundBoardApp.isLoaded) {
+				soundBoardApp.loadPage(function () {
+					_.bind(loadEditClip, self)(self.params['id']);
+				});
+			} else {
 				_.bind(loadEditClip, self)(self.params['id']);
-			});
+			}
 		});
 
 		// upload image
