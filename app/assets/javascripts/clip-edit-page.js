@@ -9,8 +9,9 @@
     window.SoundBoard = SoundBoard;
 
 	// Takes the knockout clip model to which the page is bound
-	function ClipEditPage (clip) {
+	function ClipEditPage (clip, soundBoardApp) {
 		this.clip = clip;
+		this.soundBoardApp = soundBoardApp;
 		self = this;
 		$(function () {
 			self.pageLoad();
@@ -20,14 +21,20 @@
 	_.extend(ClipEditPage.prototype, {
 		pageLoad: function() {
 			$(function() {
-				$('#fileClipUpload').on('change', function(e){
+				$('#fileClipUpload').on('change', function (e){
 					self.files = e.target.files;
 				});
 
-				$('#btnSaveClip').click(function() {
+				$('#btnSaveClip').click(function () {
 					self.saveClip();
 					return false;
 				});
+
+				$('#frmClipSourceUpload').bind('ajax:complete', function(xhr, data, status) {
+					if (data.statusText === 'Created') return self.soundSaved();
+					toastr.error('error uploading sound file');
+				});
+
 			});
 		},
 		saveClip: function () {
@@ -51,6 +58,16 @@
 				}
 			});
 
+		},
+		soundSaved: function () {
+			toastr.info('File Saved');
+			//self.soundBoardApp.viewModel.currentClip().id
+			//TODO selectively reload just this clip
+			self.soundBoardApp.viewModel.loadData();
+
+
+			//TODO WE NO LONGER NEED A GLOBAL SOUNDFILE LIST
+			this.soundBoardApp.viewModel.loadSoundFiles();
 		}
 	});
 

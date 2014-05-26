@@ -150,7 +150,7 @@
         req.open('GET', url, true);
         req.responseType = 'arraybuffer';
         req.onload = function() {
-
+                if (!ctx) return;
                 ctx.decodeAudioData(req.response, function(buffer){
                     callback(buffer);
                 }, function(e){

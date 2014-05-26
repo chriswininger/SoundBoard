@@ -2,14 +2,12 @@
 	var pages = [
 		'soundboard-main',
 		'clip-edit',
-		'upload-page',
-		'upload-clip-page'
+		'upload-page'
 	];
 
 	// Initialze the soundboard and it's clips
 	var soundBoardApp = new SoundBoard.SoundBoardApp();
 	var imageUploadPage = new ImageUploadPage(soundBoardApp.viewModel);
-	var soundSourceUploadPage = new SoundSourceUploadPage(soundBoardApp.viewModel);
 
 	var appRouter = $.sammy('#route-container', function(){
 		// Setup routes within the soundboard page
@@ -40,10 +38,6 @@
 		this.get('#/uploads', function () {
 			showPage('upload-page');
 		});
-
-		this.get('#/uploadClips', function (){
-			showPage('upload-clip-page');
-		});
 	});
 
 	appRouter.run('#/');
@@ -53,7 +47,7 @@
 
 		if (clipID) {
 			soundBoardApp.viewModel.setCurrentClip(parseInt(clipID, 10));
-			var clip = new SoundBoard.ClipEditPage(soundBoardApp.viewModel.currentClip());
+			var clip = new SoundBoard.ClipEditPage(soundBoardApp.viewModel.currentClip(), soundBoardApp);
 			showPage('clip-edit');
 		}
 	}

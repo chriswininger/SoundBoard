@@ -24,6 +24,9 @@ class SoundBoardClipSourcesController < ApplicationController
   # POST /sound_board_clip_sources.json
   def create
     uploaded_io = clip_source_params[:file]
+
+    puts 'id: ' + clip_source_params['clipID']
+
     filePath = Rails.root.join('public', 'uploads', 'clips', uploaded_io.original_filename)
 
     File.open(filePath, 'wb') do |file|
@@ -31,7 +34,7 @@ class SoundBoardClipSourcesController < ApplicationController
     end
 
     @sound_board_clip_source = SoundBoardClipSource.new({
-      :clip_id => :null,
+      :clip_id => clip_source_params['clipID'],
       :media_type => uploaded_io.content_type,
       :path_local => filePath.to_s,
       :url => request.protocol + request.host_with_port + '/uploads/clips/' + uploaded_io.original_filename
@@ -74,7 +77,7 @@ class SoundBoardClipSourcesController < ApplicationController
 
   private
     def clip_source_params
-      params.require(:sound).permit(:path_local, :url, :media_type, :file)
+      params.require(:sound).permit(:path_local, :url, :media_type, :file, :clipID)
     end
 
     # Use callbacks to share common setup or constraints between actions.

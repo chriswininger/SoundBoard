@@ -41,6 +41,7 @@ class ClipsController < ApplicationController
   def update
     respond_to do |format|
       puts clip_params.inspect
+
       if @clip.update(clip_params)
         puts 'here 1'
         puts @clip.inspect
@@ -73,6 +74,6 @@ class ClipsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def clip_params
       puts params.inspect
-      params.require(:clip).permit(:title, :default_image, :playing_image, :info, :image_playing_id, :image_default_id, :id)
+      params.require(:clip).permit(:title, :default_image, :playing_image, :info, :image_playing_id, :image_default_id, :clip_sources, :id)
     end
 end
