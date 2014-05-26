@@ -11,6 +11,7 @@
 
         this.clips  = ko.observableArray();
         this.imageFiles = ko.observableArray();
+
         this.currentClip = ko.observable();
         this.selectedClipSource = ko.observable();
         this.clipDataFetcher = clipDataFetcher;
@@ -20,9 +21,10 @@
     _.extend(SoundBoardViewModel.prototype, {
         loadData: function (complete) {
             var self = this;
-            // clear data 
+            // clear data
             self.clips([]);
-            
+            self.imageFiles([]);
+
             this.clipDataFetcher(function (data) {
                 self.mapData(data);
                 if (_.isFunction(complete)) complete();
@@ -126,7 +128,6 @@
         this.id = data.id;
         this.clipSources = data.sound_board_clip_sources;
         this.clipInfo = data.info;
-        this.playingImage = data.playing_image;
 
         this.defaultImage = ko.observable(new SoundBoard.ImageFileModel(data.image_default));
         this.imagePlaying = ko.observable(new SoundBoard.ImageFileModel(data.image_playing));
@@ -162,10 +163,8 @@
             return {
                 id: this.id,
                 info: this.clipInfo,
-                image_default_id: this.defaultImage().id,
-                image_playing_id: this.imagePlaying().id,
-                // todo:: Remove below line
-                playing_image: this.playingImage
+                image_default_id: this.defaultImage(),
+                image_playing_id: this.imagePlaying()
             };
         }
     });

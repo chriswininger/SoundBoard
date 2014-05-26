@@ -43,11 +43,11 @@
 				cache: false,
 				dataType: 'json',
 				success: function(data, textStatus, jqXHR) {
-					alert('we won!!!');
+					toastr.info('Changes Saved');
 				},
 				error: function (jqXHR, textStatus, errorThrown)
 				{
-					alert('boo: ' + textStatus);
+					toastr.error('Error saving changed ' + textStatus);
 				}
 			});
 
