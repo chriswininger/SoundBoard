@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140223175542) do
+ActiveRecord::Schema.define(version: 20140526161612) do
 
   create_table "clips", force: true do |t|
     t.string   "title",            null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20140223175542) do
   end
 
   create_table "sound_board_clip_sources", force: true do |t|
-    t.integer  "clip_id",    null: false
+    t.integer  "clip_id"
     t.string   "path_local", null: false
     t.string   "url",        null: false
     t.string   "media_type", null: false

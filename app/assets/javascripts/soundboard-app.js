@@ -16,6 +16,7 @@
     //TODO::Rename SoundBoardPage to SoundBoardApp
     function SoundBoardApp () {
         var self = this;
+        this.isLoaded = false;
 
         $(function(){
             ko.applyBindings(self.viewModel);
@@ -58,28 +59,37 @@
             }
         };
 
-        this.viewModel = new SoundBoard.SoundBoardViewModel(this.getAssets, this.getImageAssets);
+        this.viewModel = new SoundBoard.SoundBoardViewModel(this, this.getAssets, this.getImageAssets, this.getSoundAssets);
     }
 
     _.extend(SoundBoardApp.prototype, {
         loadPage: function (loaded) {
             this.viewModel.loadData(function () {
+                this.isLoaded = true;
                 if (_.isFunction(loaded)) loaded();
             });
         },
-        getAssets: _.bind(function (complete) {
+        getAssets: function (complete) {
             var data = {}, self = this;
             self.fetchClips(function (clips) {
                 data.clips = clips;
                 self.getImageAssets(function (images) {
                     data.images = images;
-                    complete(data);
+                    self.getSoundAssets( function (sounds) {
+                        data.sounds = sounds;
+                        complete(data);
+                    });
                 });
             });
-        }, SoundBoardApp.prototype),
+        },
         getImageAssets: function (complete) {
             this.fetchImageFiles(function (images){
                 complete(images);
+            });
+        },
+        getSoundAssets: function (complete) {
+            this.fetchSoundFiles(function (sounds) {
+                complete(sounds);
             });
         },
         fetchClips: function (complete){
@@ -90,6 +100,11 @@
         fetchImageFiles: function (complete) {
             $.getJSON('/images', function (images) {
                 complete(images);
+            });
+        },
+        fetchSoundFiles: function (complete) {
+            $.getJSON('/sound_board_clip_sources', function (sounds) {
+                complete(sounds);
             });
         }
     });

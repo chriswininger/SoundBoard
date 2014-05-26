@@ -6,16 +6,18 @@
     window.SoundBoard = SoundBoard;
 
     /* --- Application View Model Class --- */
-    function SoundBoardViewModel(clipDataFetcher, clipImageFetcher) {
+    function SoundBoardViewModel(soundBoardApp, clipDataFetcher, clipImageFetcher, soundDataFetcher) {
         var self = this;
 
         this.clips  = ko.observableArray();
         this.imageFiles = ko.observableArray();
+        this.soundFiles = ko.observableArray();
 
         this.currentClip = ko.observable();
         this.selectedClipSource = ko.observable();
-        this.clipDataFetcher = clipDataFetcher;
-        this.clipImageFetcher = clipImageFetcher;
+        this.clipDataFetcher = _.bind(clipDataFetcher, soundBoardApp);
+        this.soundDataFetcher = _.bind(soundDataFetcher, soundBoardApp);
+        this.clipImageFetcher = _.bind(clipImageFetcher, soundBoardApp);
     }
 
     _.extend(SoundBoardViewModel.prototype, {
@@ -24,6 +26,7 @@
             // clear data
             self.clips([]);
             self.imageFiles([]);
+            self.soundFiles([]);
 
             this.clipDataFetcher(function (data) {
                 self.mapData(data);
@@ -35,9 +38,21 @@
 
             this.imageFiles([]); // clear
             // reload
-            this.getImageFiles(function (images) {
+            this.clipImageFetcher(function (images) {
                 $.map(images, function(img) {
                     self.imageFiles.push(img);
+                });
+
+                if (_.isFunction(complete)) complete();
+            });
+        },
+        loadSoundFiles: function (complete) {
+            var self = this;
+
+            this.soundFiles([]);
+            this.soundDataFetcher(function (sounds) {
+                $.map(sounds, function (snd) {
+                    self.soundFiles.push(snd);
                 });
 
                 if (_.isFunction(complete)) complete();
@@ -51,6 +66,10 @@
 
             $.map(data.images, function(img){
                 self.imageFiles.push(img);
+            });
+
+            $.map(data.sounds, function (snd) {
+                self.soundFiles.push(snd);
             });
         },
         // Play Clip Clicked
@@ -102,11 +121,6 @@
         },
         canPlay: function (model, event) {
             model.isLoading(false);
-        },
-        getImageFiles: function (complete) {
-            $.getJSON('/images', function (images) {
-                complete(images);
-            });
         },
         setCurrentClip: function (id, callback) {
             var _clip = _.find(this.clips(), function (c) {

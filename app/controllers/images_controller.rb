@@ -32,18 +32,16 @@ class ImagesController < ApplicationController
 	def create
 		uploaded_io = image_params[:file]
 		filePath = Rails.root.join('public', 'uploads', 'images', uploaded_io.original_filename)
-		puts filePath
+
 		File.open(filePath, 'wb') do |file|
 	  		file.write(uploaded_io.read)
 	  	end
 
-	  	puts "here 1"
 		@image = Image.new({
 			:title => image_params[:title],
 			:path => filePath.to_s,
 			:url =>  request.protocol + request.host_with_port + '/uploads/images/' + uploaded_io.original_filename
 		})
-		puts "here 2"
 
 		respond_to do |format|
 			if @image.save

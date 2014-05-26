@@ -11,4 +11,5 @@
 //= require soundboard-app
 //= require clip-edit-page
 //= require image-upload
+//= require sound-source-upload-page
 //= require page-router
